@@ -114,6 +114,20 @@ namespace Front_End.Controllers
             return RedirectToAction("Index", "Blog");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid Id)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.DeleteAsync("https://localhost:7250/api/Blog/DeleteBlog?Id=" + Id))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
     }
 }

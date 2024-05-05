@@ -39,13 +39,13 @@ namespace Infrastructures.Services
             if (result != null)
             {
                 // Get the current user's ID
-                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                string user = await _userManager.FindByIdAsync(userId);
+                //var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                //string user = await _userManager.FindByIdAsync(userId);
               
-                if (result.User != user)
-                {
-                    throw new UnauthorizedAccessException("You are not authorized to delete this blog");
-                }
+                //if (result.User != user)
+                //{
+                //    throw new UnauthorizedAccessException("You are not authorized to delete this blog");
+                //}
                 _context.Blogs.Remove(result);
                 await _context.SaveChangesAsync();
             }

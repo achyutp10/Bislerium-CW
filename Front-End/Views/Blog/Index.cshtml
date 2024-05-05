@@ -94,11 +94,11 @@
                     @Html.ActionLink("Update", "Update", new { id = item.Id }) |
                     @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                     
-                    <form asp-action="">
-                        <input value="@item.Id" />
+                    <form asp-controller="Blog" asp-action="Delete" method="post">
+                        <input value="@item.Id" name="Id" />
+                        <input type="submit" value="Delete"/>
                     </form>
 
-                    @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
                 </td>
             </tr>
         }
