@@ -129,5 +129,27 @@ namespace Front_End.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> UpvoteLike(Like like)
+        {
+            like.ReactionType = true;
+            
+            using (var httpClient = new HttpClient())
+            {
+             
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(like), Encoding.UTF8, "application/json");
+
+                using (var response = await httpClient.PostAsync("https://localhost:7250/api/LikeBlog/Upvote", content))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                   
+                }
+            }
+            return RedirectToAction("Index", "Blog");
+
+        }
+
+
     }
 }

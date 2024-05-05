@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,6 +26,32 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Blog" asp-action="Index">Blog</a>
                         </li>
+
+                        @if (User.IsInRole("Blogger"))
+                        {
+                            <p>Hi</p>
+                        }
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <p>Logged in</p>
+                            <li class="nav-item">
+                                <form class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout"><button type="submit">Logout</button></form>
+                            </li>
+                            <p>@User.FindFirstValue(ClaimTypes.NameIdentifier)?.ToString()</p>
+
+                        }
+                        else
+                        {
+                            <p>Logged out</p>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+
+                        }
+
+                      
+
                     </ul>
                 </div>
             </div>

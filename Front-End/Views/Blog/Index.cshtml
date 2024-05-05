@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Domain.Entity.Blog>
+﻿@using System.Security.Claims
+@model IEnumerable<Domain.Entity.Blog>
 
 @{
     ViewData["Title"] = "Index";
@@ -80,6 +81,13 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LikeCount)
+                    <form asp-controller="Blog" asp-action="UpvoteLike" method="post">
+
+                        <input value="@User.FindFirstValue(ClaimTypes.NameIdentifier)?.ToString()" name="User" hidden />
+                        <input value="@item.Id" name="Blog" hidden />
+                        <input type="submit" value="Like" />
+                    </form>
+
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DislikeCount)

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace Front_End
 {
     public class Program
@@ -8,6 +10,15 @@ namespace Front_End
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+            options.Cookie.Name = "YourCookieName";
+            options.Cookie.SameSite = SameSiteMode.None; // Adjust this as per your requirements
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Adjust this as per your requirements
+            options.LoginPath = "/Account/Login"; // Adjust this if your login path is different
+        });
 
             var app = builder.Build();
 
