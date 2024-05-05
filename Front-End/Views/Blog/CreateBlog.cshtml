@@ -1,0 +1,52 @@
+﻿@model Domain.Entity.Blog
+
+@{
+    ViewData["Title"] = "CreateBlog";
+}
+
+<h1>CreateBlog</h1>
+
+<h4>Blog</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateBlog" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="BlogTitle" class="control-label"></label>
+                <input asp-for="BlogTitle" class="form-control" />
+                <span asp-validation-for="BlogTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BlogContent" class="control-label"></label>
+                <input asp-for="BlogContent" class="form-control" />
+                <span asp-validation-for="BlogContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="ImageFile" class="control-label">Image File</label>
+                <input type="file" name="ImageFile" class="form-control" />
+                <span asp-validation-for="ImageName" class="text-danger"></span>
+            </div>
+      
+            <div class="form-group">
+                <label asp-for="User" class="control-label"></label>
+                <input asp-for="User" class="form-control" />
+                <span asp-validation-for="User" class="text-danger"></span>
+            </div>
+          
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

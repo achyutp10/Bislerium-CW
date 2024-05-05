@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Domain.Entity.Blog>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="CreateBlog">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlogTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlogContent)
+            </th>
+
+
+            <th>
+
+
+                @Html.DisplayNameFor(model => model.ImageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LikeCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DislikeCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommentCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Popularity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BlogTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BlogContent)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageName))
+                    {
+
+                        <img src="~/Images/Blogs/@item.ImageName" height="50px" width="60px" />
+
+                    }
+
+                    @Html.DisplayFor(modelItem => item.ImageName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LikeCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DislikeCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CommentCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Popularity)
+                </td>
+                <td>
+                    @Html.ActionLink("Update", "Update", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    
+                    <form asp-action="">
+                        <input value="@item.Id" />
+                    </form>
+
+                    @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
