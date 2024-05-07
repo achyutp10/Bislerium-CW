@@ -1,5 +1,7 @@
+using Domain.Entity;
 using Front_End.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace Front_End.Controllers
@@ -13,9 +15,19 @@ namespace Front_End.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<Blog> blogList = new List<Blog>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:7250/api/Blog/GetBlogs"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    blogList = JsonConvert.DeserializeObject<List<Blog>>(apiResponse);
+                }
+            }
+            return View(blogList);
+
         }
 
         public IActionResult Privacy()

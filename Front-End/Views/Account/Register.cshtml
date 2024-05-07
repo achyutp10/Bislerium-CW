@@ -4,13 +4,15 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>Register</h1>
-
-<h4>RegisterModel1</h4>
+<link href="~/css/style.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<section class="registration-section">
+    <div class="registration-container">
+        <div class="registration-card">
+            <h2>User Registration</h2>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
+
+        @* <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -33,14 +35,84 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+        </form> *@
+
+
+
+        <form id="registration-form" asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="Email">Email:</label>
+                <input asp-for="Email" type="email" id="email" name="email" required placeholder="Enter your email">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Password:</label>
+                <div class="input-with-icon">
+                    <input asp-for="Password" type="password" id="password" name="password" required placeholder="Enter your password">
+                    
+                    <i class="fas fa-eye-slash" id="toggle-password"></i>
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword">Confirm Password:</label>
+                <div class="input-with-icon">
+                    <input asp-for="ConfirmPassword" type="password" id="confirm-password" required placeholder="Confirm your password">
+                    <i class="fas fa-eye-slash" id="toggle-confirm-password"></i>
+                </div>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Role" value="Blogger" hidden class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary" />
+            </div>
+            <div class="form-group">
+                <p>Already have an account? <a asp-controller="Account" asp-action="Login" class="already-loginhere">Log in here</a>.</p>
+            </div>
         </form>
+
+
+
+
     </div>
 </div>
-
+</section>
+@* 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div> *@
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById('toggle-password').addEventListener('click', function () {
+            const passwordField = document.getElementById('password');
+            const icon = this;
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            }
+        });
+
+        document.getElementById('toggle-confirm-password').addEventListener('click', function () {
+            const confirmPasswordField = document.getElementById('confirm-password');
+            const icon = this;
+
+            if (confirmPasswordField.type === 'password') {
+                confirmPasswordField.type = 'text';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            } else {
+                confirmPasswordField.type = 'password';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            }
+        });
+    </script>
 }

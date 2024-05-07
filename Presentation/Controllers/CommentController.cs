@@ -18,11 +18,13 @@ namespace Presentation.Controllers
         }
 
         [HttpPost, Route("AddComment")]
-        public async Task<IActionResult> AddAddCommentBlog(Comment
-            cmt)
+        public async Task<IActionResult> AddComment(Comment comment)
         {
-            var result = await _commentService.AddComment(cmt);
-            return Ok(result);
+            // Add the comment to the database
+            await _commentService.AddComment(comment);
+
+            // Return a success response
+            return Ok("Comment added successfully");
         }
 
         [HttpGet, Route("GetComment")]

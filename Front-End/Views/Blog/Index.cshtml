@@ -4,13 +4,11 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
+<link href="~/css/style.css" rel="stylesheet" />
 <p>
-    <a asp-action="CreateBlog">Create New</a>
+    <a class="reaction-button text-decoration-none" asp-action="CreateBlog">Create New</a>
 </p>
-<table class="table">
+@* <table class="table">
     <thead>
         <tr>
             <th>
@@ -81,14 +79,14 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LikeCount)
-                    <form asp-controller="Blog" asp-action="UpvoteLike" method="post">
+                    @* <form asp-controller="Blog" asp-action="UpvoteLike" method="post">
 
                         <input value="@User.FindFirstValue(ClaimTypes.NameIdentifier)?.ToString()" name="User" hidden />
                         <input value="@item.Id" name="Blog" hidden />
                         <input type="submit" value="Like" />
-                    </form>
+                    </form> *@
 
-                </td>
+               @* </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DislikeCount)
                 </td>
@@ -100,15 +98,79 @@
                 </td>
                 <td>
                     @Html.ActionLink("Update", "Update", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "SingleBlog", new { id = item.Id }) |
 
                     <form asp-controller="Blog" asp-action="Delete" method="post">
-                        <input value="@item.Id" name="Id" />
+                        <input value="@item.Id" name="Id" hidden />
                         <input type="submit" value="Delete" />
                     </form>
 
                 </td>
             </tr>
+        }
+    </tbody>
+</table> *@
+
+<table class="table table-striped text-dark rounded" style='background: #93c7c7;'>
+    <thead>
+        <tr>
+
+            <th scope="col">Uploaded by</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Uploaded Date</th>
+            <th scope="col">Image</th>
+            <th scope="col">Like Counts</th>
+            <th scope="col">Dislike Counts</th>
+            <th scope="col">Comments Counts</th>
+            <th scope="col">Popularity</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.userFK.Email)</td>
+            <td>@Html.DisplayFor(modelItem => item.BlogTitle)</td>
+            <td> @Html.DisplayFor(modelItem => item.BlogContent)</td>
+            <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+            
+            <td>
+                @if (!string.IsNullOrEmpty(item.ImageName))
+                {
+
+                    <img src="~/Images/Blogs/@item.ImageName" height="50px" width="60px" />
+
+                }
+
+               
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.LikeCount)</td>
+            <td>@Html.DisplayFor(modelItem => item.DislikeCount)</td>
+            <td>@Html.DisplayFor(modelItem => item.CommentCount)</td>
+            <td>@Html.DisplayFor(modelItem => item.Popularity)</td>
+                @*<td>
+            <a href="edit-blog.html" class="btn btn-success">Edit</a>
+
+                <a href="#" class="btn btn-danger">Delete</a>
+            </td> *@
+            <td class="d-flex gap-2">
+                    @* @Html.ActionLink("Update", "Update", new { id = item.Id }) | *@
+                    @* @Html.ActionLink("Details", "SingleBlog", new { id = item.Id }) | *@
+
+                   
+                    <a href="@Url.Action("Update", "Blog", new { id = item.Id })" class="btn btn-success">Edit</a>
+
+                    
+                    <form asp-controller="Blog" asp-action="Delete" method="post" onsubmit="return confirm('Are you sure you want to delete this blog?');">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+
+
+            </td>
+        </tr>
         }
     </tbody>
 </table>

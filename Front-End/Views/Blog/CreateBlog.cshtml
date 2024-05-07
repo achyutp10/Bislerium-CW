@@ -1,16 +1,17 @@
-﻿@model Domain.Entity.Blog
+﻿@using System.Security.Claims
+@model Domain.Entity.Blog
 
 @{
     ViewData["Title"] = "CreateBlog";
 }
-
-<h1>CreateBlog</h1>
-
-<h4>Blog</h4>
+<link href="~/css/style.css" rel="stylesheet" />
+<section class="add-blog-section">
+    <div class="main-container">
+        <div class="form-card">
+            <h2>Add a New Blog Post</h2>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateBlog" enctype="multipart/form-data">
+
+       @*  <form asp-action="CreateBlog" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
@@ -39,13 +40,55 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
-    </div>
-</div>
+        </form> *@
 
-<div>
+
+
+        <form id="blog-form" asp-action="CreateBlog" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BlogTitle">Blog Title:</label>
+                    <input asp-for="BlogTitle" type="text" id="blog-title" name="BlogTitle" required placeholder="Enter the blog title">
+                <span asp-validation-for="BlogTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BlogContent">Blog Content:</label>
+                    <input asp-for="BlogContent" id="blog-content" name="BlogContent" required placeholder="Write your blog content here">
+                <span asp-validation-for="BlogContent" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageFile">Blog Image:</label>
+                    <input type="file" id="blog-image" name="ImageFile" accept="image/*">
+                <span asp-validation-for="ImageName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User" class="control-label" hidden>User:</label>
+                    <input asp-for="User" class="form-control" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" hidden/>
+                <span asp-validation-for="User" class="text-danger"></span>
+            </div>
+
+            @* <div class="form-group">
+                <label for="blog-date">Blog Date:</label>
+                <input type="date" id="blog-date" name="blog-date" required>
+            </div> *@
+            <div class="form-group">
+                <input type="submit" value="Add Blog" class="btn btn-primary" />
+            </div>
+            
+        </form>
+
+
+
+        </div>
+    </div>
+</section>
+
+@* <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div> *@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

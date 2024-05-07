@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Front_End</title>
+    <title>@ViewData["Title"] - Bislerium Blogs</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Front_End.styles.css" asp-append-version="true" />
@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Front_End</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Bislerium Blogs</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,30 +23,33 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Blog" asp-action="Index">Blog</a>
-                        </li>
+
 
                         @if (User.IsInRole("Blogger"))
                         {
-                            <p>Hi</p>
+                            @* <p>Hi, @User.FindFirst(ClaimTypes.Email)?.Value</p> *@
                         }
 
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <p>Logged in</p>
+                         
                             <li class="nav-item">
-                                <form class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout"><button type="submit">Logout</button></form>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Blog" asp-action="Index">Uploaded Blog</a>
                             </li>
-                            <p>@User.FindFirstValue(ClaimTypes.NameIdentifier)?.ToString()</p>
+                            <li class="nav-item float-end">
+                                <form class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout"><button class="float-end" type="submit">Logout</button></form>
+                            </li>
+                            @* <p>@User.FindFirstValue(ClaimTypes.NameIdentifier)?.ToString()</p> *@
 
                         }
                         else
                         {
-                            <p>Logged out</p>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                             </li>
+                            @* <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li> *@
 
                         }
 
@@ -63,9 +66,10 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Front_End - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer justify-content-center">
+        <div class="container text-center">
+            &copy; 2024 - Bislerium Blogs 
+            @* - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

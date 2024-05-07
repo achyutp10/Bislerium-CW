@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructures", "Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentation\Presentation.csproj", "{25AC8F80-6285-4CCF-B713-8A7755DA6168}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Front-End", "Front-End\Front-End.csproj", "{D2E1CFF0-8491-430A-98E1-EE1CEBA2E16B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Front-End", "Front-End\Front-End.csproj", "{D2E1CFF0-8491-430A-98E1-EE1CEBA2E16B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{288E2FD9-C8A6-4150-8D51-B4F13DE33B50}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

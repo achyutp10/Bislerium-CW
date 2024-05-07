@@ -105,7 +105,6 @@ namespace Infrastructures.Services
                 return new LikeCommentResponse(true, "Upvote added successfully", likecmt);
             }
 
-
         }
 
         public async Task DeleteVote(Guid id)

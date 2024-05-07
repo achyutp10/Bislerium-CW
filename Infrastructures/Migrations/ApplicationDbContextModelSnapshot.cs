@@ -427,7 +427,7 @@ namespace Infrastructures.Migrations
             modelBuilder.Entity("Domain.Entity.Comment", b =>
                 {
                     b.HasOne("Domain.Entity.Blog", "Blog")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -539,6 +539,11 @@ namespace Infrastructures.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entity.Blog", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

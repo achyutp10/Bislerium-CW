@@ -11,6 +11,7 @@ using System.Reflection.Metadata;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Infrastructures.Services
 {
@@ -26,6 +27,8 @@ namespace Infrastructures.Services
             _context = context;
             _userManager = userManager;
         }
+
+
         public async Task<Blog> AddBlog(Blog blog)
         {
             await _context.Blogs.AddAsync(blog);
@@ -53,13 +56,13 @@ namespace Infrastructures.Services
 
         public async Task<IEnumerable<Blog>> GetAllBlogs()
         {
-            var result = await _context.Blogs.ToListAsync();
+            var result = await _context.Blogs.Include(x => x.userFK).ToListAsync(); 
             return result;
         }
 
         public async Task<Blog> GetBlogById(Guid id)
         {
-            return await _context.Blogs.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Blogs.Include(x => x.userFK).FirstOrDefaultAsync(x => x.Id == id);
 
         }
 

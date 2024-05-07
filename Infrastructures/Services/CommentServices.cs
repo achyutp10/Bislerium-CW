@@ -1,13 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entity;
-using Infrastructures.Migrations;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Infrastructures.Services
 {
@@ -74,13 +68,13 @@ namespace Infrastructures.Services
 
         public async Task<IEnumerable<Comment>> GetAllComment()
         {
-            var result = await _context.Comments.ToListAsync();
+            var result = await _context.Comments.Include(x => x.User).ToListAsync();
             return result;
         }
 
         public async Task<Comment> GetCommentById(Guid id)
         {
-            var result= await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
+            var result= await _context.Comments.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == id);
             return result;
         }
 

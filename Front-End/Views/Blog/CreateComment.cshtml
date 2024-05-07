@@ -1,0 +1,63 @@
+﻿@model Domain.Entity.Comment
+
+@{
+    ViewData["Title"] = "CreateComment";
+}
+
+<h1>CreateComment</h1>
+
+<h4>Comment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateComment">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostedAt" class="control-label"></label>
+                <input asp-for="PostedAt" class="form-control" />
+                <span asp-validation-for="PostedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BlogId" class="control-label"></label>
+                <input asp-for="BlogId" class="form-control" />
+                <span asp-validation-for="BlogId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LikeCount" class="control-label"></label>
+                <input asp-for="LikeCount" class="form-control" />
+                <span asp-validation-for="LikeCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DislikeCount" class="control-label"></label>
+                <input asp-for="DislikeCount" class="form-control" />
+                <span asp-validation-for="DislikeCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

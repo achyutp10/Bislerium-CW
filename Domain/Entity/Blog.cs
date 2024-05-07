@@ -32,7 +32,7 @@ namespace Domain.Entity
         public int DislikeCount { get; set; } = 0;
         public int CommentCount { get; set; } = 0;
 
-
+        public List<Comment>? Comments { get; set; }
         public int Popularity { get; set; } = 0;
     }
 }
