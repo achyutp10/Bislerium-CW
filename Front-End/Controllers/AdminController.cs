@@ -262,6 +262,11 @@ namespace Front_End.Controllers
             // Fetch top 10 popular posts and bloggers
             model.Top10PopularPosts = await GetTop10PopularPosts();
             model.Top10PopularBloggers = await GetTop10PopularBloggers();
+            model.Top10PopularBloggersEmail = await GetTop10PopularBloggersEmail();
+
+            //model.DailyActivity = await GetDailyActivity();
+
+
 
             return View(model);
         }
@@ -271,6 +276,26 @@ namespace Front_End.Controllers
         {
             return await GetCountFromApi("https://localhost:7250/api/Admin/all-time-blog-post-count");
         }
+        [HttpGet]
+        public async Task<DailyActivityData> GetDailyActivity()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await httpClient.GetAsync("https://localhost:7250/api/Admin/daily-activity");
+                    response.EnsureSuccessStatusCode();
+                    var dailyActivity = await response.Content.ReadAsAsync<DailyActivityData>();
+                    return dailyActivity;
+                }
+                catch (HttpRequestException)
+                {
+                    // Handle exception
+                    return null;
+                }
+            }
+        }
+
 
         [HttpGet]
         public async Task<int> GetAllTimeCommentCount()
@@ -324,6 +349,9 @@ namespace Front_End.Controllers
         public async Task<string[]> GetTop10PopularBloggers()
         {
             return await GetArrayFromApi("https://localhost:7250/api/Admin/top-10-popular-bloggers");
+        }public async Task<string[]> GetTop10PopularBloggersEmail()
+        {
+            return await GetArrayFromApi("https://localhost:7250/api/Admin/top-10-popular-bloggers-emails");
         }
 
         private async Task<int> GetCountFromApi(string url)
@@ -359,7 +387,7 @@ namespace Front_End.Controllers
                 {
                     HttpResponseMessage response = await httpClient.GetAsync(url);
                     response.EnsureSuccessStatusCode();
-                    var array = await response.Content.ReadAsAsync<string[]>();
+                    var array = await response.Content.ReadAsAsync<string[]>(); 
                     return array;
                 }
                 catch (HttpRequestException)
@@ -368,6 +396,8 @@ namespace Front_End.Controllers
                 }
             }
         }
+
+        
     }
 }
 

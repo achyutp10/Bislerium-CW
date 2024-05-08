@@ -1,43 +1,146 @@
-﻿@model int
+﻿@model Front_End.Controllers.AdminDashboardViewModel
+
 @{
     ViewData["Title"] = "Admin Dashboard";
 }
-
+<link href="~/css/style.css" rel="stylesheet" />
 <h1>@ViewData["Title"]</h1>
 
-<div>
-    <h2>All-Time Stats</h2>
-    <p>All-Time Blog Post Count: @Model</p>
-    <p>All-Time Blog Post Count: @ViewBag.AllTimeBlogPostCount</p>
-    <p>All-Time Comment Count: @ViewBag.AllTimeCommentCount</p>
-    <p>All-Time Downvote Count: @ViewBag.AllTimeDownvoteCount</p>
-    <p>All-Time Upvote Count: @ViewBag.AllTimeUpvoteCount</p>
-</div>
+<section class="admin-dashboard">
+    <div class="main-container">
+        <div class="dashboard-summary">
+            <h2 class="admin-index-h2">Admin Dashboard</h2>
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>Total Blog Posts</h3>
+                    <p id="total-posts">@Model.AllTimeBlogPostCount</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Total Upvotes</h3>
+                    <p id="total-upvotes">@Model.AllTimeUpvoteCount</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Total Downvotes</h3>
+                    <p id="total-downvotes">@Model.AllTimeDownvoteCount</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Total Comments</h3>
+                    <p id="total-comments">@Model.AllTimeCommentCount</p>
+                </div>
+            </div>
+        </div>
 
-<div>
-    <h2>Daily Stats</h2>
-    <p>Daily Blog Post Count: @ViewBag.DailyBlogPostCount</p>
-    <p>Daily Comment Count: @ViewBag.DailyCommentCount</p>
-    <p>Daily Downvote Count: @ViewBag.DailyDownvoteCount</p>
-    <p>Daily Upvote Count: @ViewBag.DailyUpvoteCount</p>
-</div>
+        <div class="dashboard-activity">
+            <h3>Daily Activity</h3>
+            <form id="activity-filter">
+                <label for="date">Choose a date:</label>
+                <input type="date" id="date" name="date">
+                <button type="button" id="filter-button">Filter</button>
+            </form>
 
-@* <div>
-    <h2>Top 10 Popular Posts</h2>
-    <ul>
-        @foreach (var post in ViewBag.Top10PopularPosts)
-        {
-            <li>@post</li>
+            <table id="daily-activity-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Blog Posts</th>
+                        <th>Upvotes</th>
+                        <th>Downvotes</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody id="daily-activity-body">
+                    <!-- Daily activity data will be inserted here dynamically -->
+                </tbody>
+            </table>
+        </div>
+        <div class="dashboard-ranking">
+            <h3>Top 10 Most Popular Blog Posts</h3>
+            <ol id="top-blog-posts">
+                @foreach (var post in Model.Top10PopularPosts)
+                {
+                    <li>@post</li>
+                }
+            </ol>
+            <h3>Top 10 Bloggers</h3>
+            <ol id="top-bloggers">
+                @foreach (var blogger in Model.Top10PopularBloggers)
+                {
+                    <li>@blogger</li>
+                }
+            </ol>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#filter-button').click(function () {
+                var selectedDate = $('#date').val();
+                fetchDailyActivity(selectedDate);
+            });
+        });
+
+        function fetchDailyActivity(date) {
+            $.ajax({
+                url: '@Url.Action("GetDailyActivity", "Admin")',
+                type: 'GET',
+                data: { date: date },
+
+                success: function (data) {
+                    updateDailyActivityTable(data);
+                },
+                error: function (error) {
+                    console.error('Error fetching daily activity:', error);
+                }
+            });
         }
-    </ul>
-</div>
 
-<div>
-    <h2>Top 10 Popular Bloggers</h2>
-    <ul>
-        @foreach (var blogger in ViewBag.Top10PopularBloggers)
-        {
-            <li>@blogger</li>
+        function updateDailyActivityTable(data) {
+            $('#daily-activity-body').empty();
+            // Parse the date string to a JavaScript Date object
+            var date = new Date(data.date);
+            // Format the date as "MM/dd/yyyy"
+            var formattedDate = ('0' + (date.getMonth() + 1)).slice(-2) + '/' + ('0' + date.getDate()).slice(-2) + '/' + date.getFullYear();
+            $('#daily-activity-body').append(
+                `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${data.blogPosts}</td>
+                    <td>${data.upvotes}</td>
+                    <td>${data.downvotes}</td>
+                    <td>${data.comments}</td>
+                </tr>`
+            );
         }
-    </ul>
-</div> *@
+
+
+
+
+        // Attach event listener to the filter button
+        $(document).ready(function () {
+            $('#filter-button').click(function () {
+                // Get the selected date value
+                var selectedDate = $('#date').val();
+
+                // Format the date as "MM/dd/yyyy"
+                var formattedDate = formatDate(selectedDate);
+
+                // Log the formatted date to ensure it's correct
+                console.log("Formatted Date:", formattedDate);
+
+                // Call fetchDailyActivity with the formatted date
+                fetchDailyActivity(formattedDate);
+            });
+        });
+
+        // Function to format the date as "MM/dd/yyyy"
+        function formatDate(dateString) {
+            var date = new Date(dateString);
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1).toString().padStart(2, '0');
+            var day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+    </script>
+}

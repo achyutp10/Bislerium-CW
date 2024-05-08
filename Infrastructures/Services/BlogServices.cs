@@ -41,14 +41,6 @@ namespace Infrastructures.Services
             var result = await _context.Blogs.FindAsync(id);
             if (result != null)
             {
-                // Get the current user's ID
-                //var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                //string user = await _userManager.FindByIdAsync(userId);
-              
-                //if (result.User != user)
-                //{
-                //    throw new UnauthorizedAccessException("You are not authorized to delete this blog");
-                //}
                 _context.Blogs.Remove(result);
                 await _context.SaveChangesAsync();
             }

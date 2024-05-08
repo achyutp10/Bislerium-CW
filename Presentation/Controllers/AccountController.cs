@@ -63,7 +63,7 @@ namespace Presentation.Controllers
             return BadRequest(result.Errors);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("get/{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
@@ -128,7 +128,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateUser(string id, UpdateModel model)
+        public async Task<IActionResult> UpdateUser(string id, AppUser model)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
@@ -136,8 +136,10 @@ namespace Presentation.Controllers
                 return NotFound("User not found.");
             }
 
-            user.Email= model.Email;
-            user.UserName = model.Username;
+            user.FirstName= model.FirstName;
+            user.LastName = model.LastName;
+            user.Age = model.Age;
+            user.PhoneNumber = model.PhoneNumber;
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {

@@ -83,6 +83,20 @@ namespace Presentation.Controllers
             return Ok(count);
         }
 
+        [HttpGet("daily-activity")]
+        public async Task<IActionResult> GetDailyActivity([FromQuery] DateTime date)
+        {
+            var dailyActivity = new
+            {
+                Date = date,
+                BlogPosts = await _adminService.GetDailyBlogPostCount(date),
+                Comments = await _adminService.GetDailyCommentCount(date),
+                Downvotes = await _adminService.GetDailyDownvoteCount(date),
+                Upvotes = await _adminService.GetDailyUpvoteCount(date)
+            };
+            return Ok(dailyActivity);
+        }
+
         [HttpGet("top-10-popular-posts")]
         public async Task<IActionResult> GetTop10PopularPosts()
         {
@@ -104,6 +118,20 @@ namespace Presentation.Controllers
             {
                 var popularBloggers = await _adminService.GetTop10PopularBloggers();
                 return Ok(popularBloggers);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("top-10-popular-bloggers-emails")]
+        public async Task<IActionResult> GetTop10PopularBloggersEmail()
+        {
+            try
+            {
+                var popularBloggersEmails = await _adminService.GetTop10PopularBloggersEmails();
+                return Ok(popularBloggersEmails);
             }
             catch (Exception ex)
             {

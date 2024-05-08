@@ -29,29 +29,62 @@
                         {
                             @* <p>Hi, @User.FindFirst(ClaimTypes.Email)?.Value</p> *@
                         }
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item float-end">
+                                <form class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index"><button class="float-end" type="submit">Admin</button></form>
+                            </li>
+                            <li class="nav-item float-end">
+                                <form class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout"><button class="float-end" type="submit">Logout</button></form>
+                            </li>
+                            <li class="nav-item float-end">
+                                <a class="nav-link text-dark btn btn-success" asp-area="" asp-controller="Account" asp-action="AdminRegister">Register Admin</a>
 
-                        @if (User.Identity.IsAuthenticated)
+                            </li>
+                            <li class="nav-item float-end">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="GetUser">Users</a>
+
+                            </li>
+                        }
+                        @* else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                           
+
+                        } *@
+
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Blogger"))
                         {
                          
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Blog" asp-action="Index">Uploaded Blog</a>
                             </li>
+                            <li class="nav-item">
+                                @* <a href="@Url.Action("UpdateUser", "Account", new { id = item.Id })" class="btn btn-success">Edit Profile</a> *@
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="UpdateUser">Update Profile</a>
+                            </li>
+                             <li class="nav-item">
+                                @* <a href="@Url.Action("UpdateUser", "Account", new { id = item.Id })" class="btn btn-success">Edit Profile</a> *@
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
+                            </li> 
                             <li class="nav-item float-end">
                                 <form class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout"><button class="float-end" type="submit">Logout</button></form>
-                            </li><li class="nav-item float-end">
-                                <form class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index"><button class="float-end" type="submit">Admin</button></form>
                             </li>
+                                @*  
+                               <li class="nav-item float-end">
+                                <form class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index"><button class="float-end" type="submit">Admin</button></form>
+                            </li> *@
                             @* <p>@User.FindFirstValue(ClaimTypes.NameIdentifier)?.ToString()</p> *@
-
+                            
                         }
                         else
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                             </li>
-                            @* <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                            </li> *@
+                            
 
                         }
 

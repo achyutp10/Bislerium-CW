@@ -11,6 +11,8 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using System.Net.Http;
+using Microsoft.AspNetCore.Hosting;
+using Cqrs.Hosts;
 namespace Presentation
 {
     public class Program
@@ -106,6 +108,32 @@ namespace Presentation
 
 
             app.Run();
+
+            //
+            //CreateHostBuilder(args).Build().Run();
+
         }
+        //public static IHostBuilder CreateHostBuilder(string[] args) =>
+        //Host.CreateDefaultBuilder(args)
+        //    .ConfigureWebHostDefaults(webBuilder =>
+        //    {
+        //        webBuilder.UseStartup<StartUp>();
+        //        webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+        //        {
+        //            // Other configurations...
+        //        });
+        //        webBuilder.ConfigureServices(services =>
+        //        {
+        //            services.AddCors(options =>
+        //            {
+        //                options.AddPolicy("AllowSpecificOrigin", builder =>
+        //                {
+        //                    builder.WithOrigins("https://localhost:7119")
+        //                           .AllowAnyMethod()
+        //                           .AllowAnyHeader();
+        //                });
+        //            });
+        //        });
+        //    });
     }
 }

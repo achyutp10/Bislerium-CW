@@ -10,7 +10,9 @@
         public int DailyCommentCount { get; set; }
         public int DailyDownvoteCount { get; set; }
         public int DailyUpvoteCount { get; set; }
+        //public string[] DailyActivity { get; set; }
         public string[] Top10PopularPosts { get; set; }
+        public string[] Top10PopularBloggersEmail { get; set; }
         public string[] Top10PopularBloggers { get; set; }
     }
 }

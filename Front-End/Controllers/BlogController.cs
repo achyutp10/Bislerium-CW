@@ -37,19 +37,6 @@ namespace Front_End.Controllers
         }
 
 
-        //public async Task<IActionResult> SingleBlog(Guid id)
-        //{
-        //    Blog blog;
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        using (var response = await httpClient.GetAsync($"https://localhost:7250/api/Blog/GetBlog?id={id}"))
-        //        {
-        //            string apiResponse = await response.Content.ReadAsStringAsync();
-        //            blog = JsonConvert.DeserializeObject<Blog>(apiResponse);
-        //        }
-        //    }
-        //    return View(blog);
-        //}
 
         public async Task<IActionResult> SingleBlog(Guid id)
         {
@@ -77,7 +64,7 @@ namespace Front_End.Controllers
             }
 
             // Assign comments to the blog model
-            blog.Comments = comments;
+            blog.Comments = comments.Where(x => x.BlogId == id).ToList();
 
             return View(blog);
         }
@@ -330,19 +317,18 @@ namespace Front_End.Controllers
 
             using (var httpClient = new HttpClient())
             {
-
-
                 StringContent content = new StringContent(JsonConvert.SerializeObject(likeComment), Encoding.UTF8, "application/json");
 
                 using (var response = await httpClient.PostAsync("https://localhost:7250/api/LikeComment/UpvoteCmt", content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-
+                    // You may want to handle the response here if needed
                 }
             }
+            // Redirect to SingleBlog action with the comment ID
             return RedirectToAction("SingleBlog", "Blog", new { id = likeComment.Comment });
-
         }
+
 
         [HttpPost]
         public async Task<IActionResult> DownvoteCommentLike(Like like)

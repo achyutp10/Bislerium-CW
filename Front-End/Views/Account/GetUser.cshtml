@@ -1,0 +1,37 @@
+﻿@model List<Domain.AppUser>
+@{
+    ViewData["Title"] = "GetUser";
+}
+<link href="~/css/style.css" rel="stylesheet" />
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-dark">Username</th>
+            <th class="text-dark">Email</th>
+            <th class="text-dark">First Name</th>
+            <th class="text-dark">Last Name</th>
+            <th class="text-dark">Age</th>
+            <th class="text-dark">Phone Number</th>
+            <th class="text-dark">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td class="text-dark">@user.UserName</td>
+                <td class="text-dark">@user.Email</td>
+                <td class="text-dark">@user.FirstName</td>
+                <td class="text-dark">@user.LastName</td>
+                <td class="text-dark">@user.Age</td>
+                <td class="text-dark">@user.PhoneNumber</td>
+                <td>
+                    <form asp-controller="Account" asp-action="Delete" method="post" onsubmit="return confirm('Are you sure you want to delete this User?');">
+                        <input type="hidden" name="Id" value="@user.Id" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

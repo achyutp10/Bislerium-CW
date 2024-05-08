@@ -20,5 +20,6 @@ namespace Application.Interfaces
 
         Task<List<string>> GetTop10PopularPosts();
         Task<List<string>> GetTop10PopularBloggers();
+        Task<List<string>> GetTop10PopularBloggersEmails();
     }
 }

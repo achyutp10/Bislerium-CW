@@ -31,6 +31,40 @@
 </section>
 <!---------HERO SECTION ENDS FROM HERE----------->
 <!---------RECENT BLOG POST SECTION STARTS FROM HERE--------------->
+<div class="pagination">
+    @if (ViewBag.HasPreviousPage)
+    {
+        <a href="?page=@(ViewBag.CurrentPage - 1)&pageSize=@ViewBag.PageSize&sortOrder=@ViewBag.SortOrder">Previous</a>
+    }
+
+    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+    {
+        <a href="?page=@i&pageSize=@ViewBag.PageSize&sortOrder=@ViewBag.SortOrder" class="@(i == ViewBag.CurrentPage ? "active" : "")">@i</a>
+    }
+
+    @if (ViewBag.HasNextPage)
+    {
+        <a href="?page=@(ViewBag.CurrentPage + 1)&pageSize=@ViewBag.PageSize&sortOrder=@ViewBag.SortOrder">Next</a>
+    }
+</div>
+
+
+<div class="sorting">
+    <label for="sortOrder">Sort By:</label>
+    <select id="sortOrder" name="sortOrder" onchange="location = this.value;">
+        <option value="?page=@ViewBag.CurrentPage&pageSize=@ViewBag.PageSize&sortOrder=recent"
+                selected="@(ViewBag.SortOrder == "recent" ? "selected" : null)">Recent</option>
+        <option value="?page=@ViewBag.CurrentPage&pageSize=@ViewBag.PageSize&sortOrder=random"
+                selected="@(ViewBag.SortOrder == "random" ? "selected" : null)">Random</option>
+        <option value="?page=@ViewBag.CurrentPage&pageSize=@ViewBag.PageSize&sortOrder=popularity"
+                selected="@(ViewBag.SortOrder == "popularity" ? "selected" : null)">Popularity</option>
+    </select>
+</div>
+
+
+
+
+
 <section class="blog-post-section">
     <div class="main-container">
         <div class="blog-grid">
@@ -63,6 +97,8 @@
             </div>
 
             *@
+            
+            </div>
         </div>
     </div>
 </section>

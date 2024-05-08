@@ -73,38 +73,26 @@ namespace Infrastructures.Services
         public async Task<LikeCommentResponse> AddUpvote(LikeComment likecmt)
         {
             if (likecmt == null || !likecmt.ReactionType)
-                return new LikeCommentResponse(false, "Invalid operation: like is null or it's an downvote");
+                return new LikeCommentResponse(false, "Invalid operation: like is null or it's a downvote");
 
             var commentService = new CommentServices(_context);
-            var existingLike = await GetCommentsUserLike(likecmt.Comment, likecmt.User);
             var comments = await commentService.GetCommentById(likecmt.Comment);
 
-            if (existingLike != null)
+            // Check if comments object is null
+            if (comments == null)
             {
-                if (existingLike.ReactionType)
-                {
-                    _context.LikeComments.Remove(existingLike);
-                    comments.LikeCount--;
-
-                    _context.Comments.Update(comments);
-                    await _context.SaveChangesAsync();
-                    return new LikeCommentResponse(true, "Upvote removed successfully", likecmt);
-                }
-                else
-                {
-                    return new LikeCommentResponse(false, "Cannot downvote an upvoted post");
-                }
-            }
-            else
-            {
-                _context.LikeComments.Add(likecmt);
-                comments.LikeCount++;
-
-                _context.Comments.Update(comments);
-                await _context.SaveChangesAsync();
-                return new LikeCommentResponse(true, "Upvote added successfully", likecmt);
+                // Handle the case where comments are not found
+                return new LikeCommentResponse(false, "Comments not found");
             }
 
+            // Update the like count
+            comments.LikeCount++;
+
+            // Update the comments
+            _context.Comments.Update(comments);
+            await _context.SaveChangesAsync();
+
+            return new LikeCommentResponse(true, "Upvote added successfully", likecmt);
         }
 
         public async Task DeleteVote(Guid id)
