@@ -1,0 +1,43 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h2>All-Time Stats</h2>
+    <p>All-Time Blog Post Count: @Model</p>
+    <p>All-Time Blog Post Count: @ViewBag.AllTimeBlogPostCount</p>
+    <p>All-Time Comment Count: @ViewBag.AllTimeCommentCount</p>
+    <p>All-Time Downvote Count: @ViewBag.AllTimeDownvoteCount</p>
+    <p>All-Time Upvote Count: @ViewBag.AllTimeUpvoteCount</p>
+</div>
+
+<div>
+    <h2>Daily Stats</h2>
+    <p>Daily Blog Post Count: @ViewBag.DailyBlogPostCount</p>
+    <p>Daily Comment Count: @ViewBag.DailyCommentCount</p>
+    <p>Daily Downvote Count: @ViewBag.DailyDownvoteCount</p>
+    <p>Daily Upvote Count: @ViewBag.DailyUpvoteCount</p>
+</div>
+
+@* <div>
+    <h2>Top 10 Popular Posts</h2>
+    <ul>
+        @foreach (var post in ViewBag.Top10PopularPosts)
+        {
+            <li>@post</li>
+        }
+    </ul>
+</div>
+
+<div>
+    <h2>Top 10 Popular Bloggers</h2>
+    <ul>
+        @foreach (var blogger in ViewBag.Top10PopularBloggers)
+        {
+            <li>@blogger</li>
+        }
+    </ul>
+</div> *@

@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
-
+using System.Net.Http;
 namespace Presentation
 {
     public class Program
@@ -21,7 +21,7 @@ namespace Presentation
 
             // Add services to the container.
             builder.Services.AddDbContext<ApplicationDbContext>();
-
+            
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -63,10 +63,13 @@ namespace Presentation
             builder.Services.AddScoped<ILikeComment, CommentLikeServices>();
             builder.Services.AddScoped<IBlog,BlogServices>();
             builder.Services.AddScoped<ILike, LikeServices>();
+            builder.Services.AddScoped<IAdmin, AdminServices>();
             builder.Services.AddIdentity<AppUser,IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddApiEndpoints();
+            builder.Services.AddHttpClient();
 
+            //
             var app = builder.Build();
              using( var scope = app.Services.CreateScope() )
             {
