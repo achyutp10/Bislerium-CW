@@ -36,7 +36,6 @@ namespace Front_End.Controllers
                     }
                 }
             }
-
             // Sort the blogList based on the sortOrder
             switch (sortOrder)
             {
@@ -53,20 +52,17 @@ namespace Front_End.Controllers
                 default:
                     break;
             }
-
             // Pass pagination and sorting information to the view
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
             ViewBag.SortOrder = sortOrder;
-
             // Set ViewBag properties for pagination
             ViewBag.HasPreviousPage = (page > 1);
             ViewBag.HasNextPage = (blogList.Count == pageSize);
 
             return View(blogList);
         }
-
-        // Fisher-Yates shuffle algorithm for shuffling the list
+        // algorithm for shuffling the list
         private void Shuffle<T>(List<T> list)
         {
             Random rng = new Random();

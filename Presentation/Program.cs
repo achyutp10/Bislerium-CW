@@ -68,8 +68,11 @@ namespace Presentation
             builder.Services.AddScoped<IAdmin, AdminServices>();
             builder.Services.AddIdentity<AppUser,IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddApiEndpoints();
+            .AddApiEndpoints(); 
             builder.Services.AddHttpClient();
+
+
+        
 
             //
             var app = builder.Build();

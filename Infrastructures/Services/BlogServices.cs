@@ -35,7 +35,6 @@ namespace Infrastructures.Services
             await _context.SaveChangesAsync();
             return blog;
         }
-
         public async Task DeleteBlog(Guid id)
         {
             var result = await _context.Blogs.FindAsync(id);
@@ -51,21 +50,15 @@ namespace Infrastructures.Services
             var result = await _context.Blogs.Include(x => x.userFK).ToListAsync(); 
             return result;
         }
-
         public async Task<Blog> GetBlogById(Guid id)
         {
             return await _context.Blogs.Include(x => x.userFK).FirstOrDefaultAsync(x => x.Id == id);
 
         }
-
-   
-
         public async Task<Blog> UpdateBlog(Blog blog)
         {
             Blog prevBlog = await GetBlogById(blog.Id);
             BlogHistory history = new BlogHistory();
-
-
             if (prevBlog != null)
             {
                 history.Blog = prevBlog.Id;
@@ -78,18 +71,14 @@ namespace Infrastructures.Services
                 if (!string.IsNullOrEmpty(blog.ImageName))
                 {
                     prevBlog.ImageName = blog.ImageName;
-
                 }
                 prevBlog.BlogTitle = blog.BlogTitle;
                 prevBlog.BlogContent = blog.BlogContent;
-              
-
                 _context.Blogs.Update(prevBlog);
                 await _context.SaveChangesAsync();
 
             }
             return prevBlog;
-
         }
     }
 }

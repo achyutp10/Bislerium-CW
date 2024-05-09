@@ -26,20 +26,13 @@ namespace Infrastructures.Services
             }
             else
             {
-                // Handle the case where the associated blog is not found
                 return new CommentResponse(false, "Not Found");
-
             }
-
-            return new CommentResponse(true, "Added Comment Successfully", comments);
-            
+            return new CommentResponse(true, "Added Successfully", comments);
         }
-
-
         public async Task<CommentResponse> DeleteComment(Guid id)
         {
             var result = await _context.Comments.FindAsync(id);
-           
             if (result != null)
             {
                 var blog = await _context.Blogs.FindAsync(result.BlogId);
@@ -52,60 +45,43 @@ namespace Infrastructures.Services
                 }
                 else
                 {
-                    // Handle the case where the associated blog is not found
                     return new CommentResponse(false, "Not Found");
-
                 }
                 _context.Comments.Remove(result);
                 await _context.SaveChangesAsync();
-                return new CommentResponse(true, " Comment Sucessfully Deleated");
+                return new CommentResponse(true, " Comment Deleated");
             }
             else
             {
-                return new CommentResponse(false, " Comment Couldn't be Deleated");
+                return new CommentResponse(false, " Comment not Deleated");
             }
         }
-
         public async Task<IEnumerable<Comment>> GetAllComment()
         {
             var result = await _context.Comments.Include(x => x.User).ToListAsync();
             return result;
         }
-
         public async Task<Comment> GetCommentById(Guid id)
         {
             var result= await _context.Comments.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == id);
             return result;
         }
-
- 
-
         public async Task<CommentResponse> UpdateComment(Comment comments)
         {
             Comment prevComment = await GetCommentById(comments.Id);
             CommentHistory history = new CommentHistory();
-
-
             if (prevComment != null)
             {
                 history.Comments = prevComment.Id;
                 history.CommentContentPrevious = prevComment.Content;
                 history.CommentCreatedDateTime = prevComment.PostedAt;
                 await _context.CommentHistories.AddAsync(history);
-
-
                 prevComment.Content = comments.Content;
-  
-
-
                 _context.Comments.Update(prevComment);
                 await _context.SaveChangesAsync();
-
             }
-            return new CommentResponse(true,"Sucessfully UPDATED", prevComment);
-
+            return new CommentResponse(true, "Updated Sucessfully", prevComment);
         }
-
   
     }
 }

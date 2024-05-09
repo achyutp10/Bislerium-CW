@@ -51,11 +51,11 @@ namespace Infrastructures.Services
                     
                     _context.Comments.Update(comments);
                     await _context.SaveChangesAsync();
-                    return new LikeCommentResponse(true, "Downvote removed successfully", likecmt);
+                    return new LikeCommentResponse(true, "Downvote removed", likecmt);
                 }
                 else
                 {
-                    return new LikeCommentResponse(false, "Cannot downvote an upvoted post");
+                    return new LikeCommentResponse(false, "Cannot downvote");
                 }
             }
             else
@@ -73,7 +73,7 @@ namespace Infrastructures.Services
         public async Task<LikeCommentResponse> AddUpvote(LikeComment likecmt)
         {
             if (likecmt == null || !likecmt.ReactionType)
-                return new LikeCommentResponse(false, "Invalid operation: like is null or it's a downvote");
+                return new LikeCommentResponse(false, "Invalid operation");
 
             var commentService = new CommentServices(_context);
             var comments = await commentService.GetCommentById(likecmt.Comment);

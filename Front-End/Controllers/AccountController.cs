@@ -7,12 +7,14 @@ using Newtonsoft.Json;
 using System.Security.Claims;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
 
 namespace Front_End.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IWebHostEnvironment _env;
+
         public AccountController(IWebHostEnvironment env)
         {
             _env = env;
@@ -24,7 +26,7 @@ namespace Front_End.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel1 registerModel)
+        public async Task<IActionResult> Register(RegisterModel registerModel)
         {
 
             using (var httpClient = new HttpClient())
@@ -39,7 +41,7 @@ namespace Front_End.Controllers
                     //blog = JsonConvert.DeserializeObject<Blog>(apiResponse);
                 }
             }
-            return RedirectToAction("Index", "Blog");
+            return RedirectToAction("Login", "Account");
 
         }
 
@@ -49,7 +51,7 @@ namespace Front_End.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AdminRegister(RegisterModel1 registerModel)
+        public async Task<IActionResult> AdminRegister(RegisterModel registerModel)
         {
 
             using (var httpClient = new HttpClient())
@@ -203,30 +205,73 @@ namespace Front_End.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ChangePassword()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"https://localhost:7250/api/Account/get/{userId}"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        var user = JsonConvert.DeserializeObject<AppUser>(apiResponse);
+
+                        var model = new ChangePassword { UserId = user.Id };
+                        return View(model);
+                    }
+                    else
+                    {
+                        // Handle error response from API
+                        return View("Error");
+                    }
+                }
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePassword model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            using (var httpClient = new HttpClient())
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+                using (var response = await httpClient.PutAsync($"https://localhost:7250/api/Account/change", content))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index", "Home"); // Redirect to home page or any other page after successful password change
+                    }
+                    else
+                    {
+                        // Handle error response from API
+                        return View("Error");
+                    }
+                }
+            }
+        }
+
         //[HttpGet]
         //public async Task<IActionResult> ChangePassword()
         //{
+        //    // Fetch the current user's ID
         //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        //    using (var httpClient = new HttpClient())
+        //    var user = await _userManager.FindByIdAsync(userId);
+        //    if (user == null)
         //    {
-        //        using (var response = await httpClient.GetAsync($"https://localhost:7250/api/Account/get/{userId}"))
-        //        {
-        //            if (response.IsSuccessStatusCode)
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                var user = JsonConvert.DeserializeObject<AppUser>(apiResponse);
-
-        //                var model = new ChangePassword { UserId = user.Id };
-        //                return View(model);
-        //            }
-        //            else
-        //            {
-        //                // Handle error response from API
-        //                return View("Error");
-        //            }
-        //        }
+        //        return NotFound("User not found.");
         //    }
+
+        //    // Create and populate the model
+        //    var model = new ChangePassword { UserId = user.Id };
+        //    return View(model);
         //}
 
         //[HttpPost]
@@ -237,23 +282,24 @@ namespace Front_End.Controllers
         //        return View(model);
         //    }
 
-        //    using (var httpClient = new HttpClient())
+        //    var user = await _userManager.FindByIdAsync(model.UserId);
+        //    if (user == null)
         //    {
-        //        var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-
-        //        using (var response = await httpClient.PutAsync($"https://localhost:7250/api/Account/change", content))
-        //        {
-        //            if (response.IsSuccessStatusCode)
-        //            {
-        //                return RedirectToAction("Index", "Home"); // Redirect to home page or any other page after successful password change
-        //            }
-        //            else
-        //            {
-        //                // Handle error response from API
-        //                return View("Error");
-        //            }
-        //        }
+        //        return NotFound("User not found.");
         //    }
+
+        //    var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.Password);
+        //    if (result.Succeeded)
+        //    {
+        //        return RedirectToAction("Index", "Home"); // Redirect to home page or any other page after successful password change
+        //    }
+
+        //    // If password change fails, add errors to ModelState and return view
+        //    foreach (var error in result.Errors)
+        //    {
+        //        ModelState.AddModelError(string.Empty, error.Description);
+        //    }
+        //    return View(model);
         //}
 
 

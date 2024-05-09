@@ -60,8 +60,9 @@
 
             <div class="form-group">
                 <label for="ImageFile">Blog Image:</label>
-                    <input type="file" id="blog-image" name="ImageFile" accept="image/*">
+                <input type="file" id="blog-image" name="ImageFile" accept="image/*" required>
                 <span asp-validation-for="ImageName" class="text-danger"></span>
+                <span class="text-danger" id="image-size-error" style="display:none;">Image size should not be greater than 3MB.</span>
             </div>
 
             <div class="form-group">
@@ -91,5 +92,15 @@
 </div> *@
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+   document.getElementById('blog-image').addEventListener('change', function() {
+        var file = this.files[0];
+        if (file.size > 3 * 1024 * 1024) { 
+            document.getElementById('image-size-error').style.display = 'block';
+            this.value = ''; 
+        } else {
+            document.getElementById('image-size-error').style.display = 'none';
+        }
+    });
+    </script>
 }

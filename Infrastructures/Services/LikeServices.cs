@@ -33,51 +33,10 @@ namespace Infrastructures.Services
             return res;
 
         }
-
-        public async Task<LikeResponse> AddDownVote(Like like)
-        {
-            if (like == null || like.ReactionType)
-                return new LikeResponse(false, "Invalid operation: like is null or it's an upvote");
-
-            var blogService = new BlogServices(_context,_userManager,_httpContextAccessor);
-            var existingLike = await GetUsersLike(like.Blog, like.User);
-            var blog = await blogService.GetBlogById(like.Blog);
-
-            if (existingLike != null)
-            {
-                if (!existingLike.ReactionType)
-                {
-                    _context.Likes.Remove(existingLike);
-                    blog.DislikeCount--;
-                    blog.Popularity = (2 * blog.LikeCount) + (-1 * blog.DislikeCount) + (1 * blog.CommentCount);
-                    _context.Blogs.Update(blog);
-                    await _context.SaveChangesAsync();
-                    return new LikeResponse(true, "Downvote removed successfully", like);
-                }
-                else
-                {
-                    return new LikeResponse(false, "Cannot downvote an upvoted post");
-                }
-            }
-            else
-            {
-                _context.Likes.Add(like);
-                blog.DislikeCount++;
-                blog.Popularity = (2 * blog.LikeCount) + (-1 * blog.DislikeCount) + (1 * blog.CommentCount);
-                _context.Blogs.Update(blog);
-                await _context.SaveChangesAsync();
-                return new LikeResponse(true, "Downvote added successfully", like);
-            }
-
-         
-        }
-
         public async Task<LikeResponse> AddUpvote(Like like)
         {
             if (like == null || !like.ReactionType)
-                return new LikeResponse(false, "Invalid operation: like is null or it's a downvote");
-
-
+                return new LikeResponse(false, "Invalid operation");
             var blogService = new BlogServices(_context, _userManager, _httpContextAccessor);
             var existingLike = await GetUsersLike(like.Blog, like.User);
             var blog = await blogService.GetBlogById(like.Blog);
@@ -91,11 +50,11 @@ namespace Infrastructures.Services
                     blog.Popularity = (2 * blog.LikeCount) + (-1 * blog.DislikeCount) + (1 * blog.CommentCount);
                     _context.Blogs.Update(blog);
                     await _context.SaveChangesAsync();
-                    return new LikeResponse(true, "Upvote removed successfully");
+                    return new LikeResponse(true, "Upvote removed");
                 }
                 else
                 {
-                    return new LikeResponse(false, "Cannot upvote a downvoted post");
+                    return new LikeResponse(false, "Cannot upvote");
                 }
             }
             else
@@ -107,10 +66,42 @@ namespace Infrastructures.Services
                 await _context.SaveChangesAsync();
                 return new LikeResponse(true, "Upvote added successfully", like);
             }
-
-           
         }
 
+        public async Task<LikeResponse> AddDownVote(Like like)
+        {
+            if (like == null || like.ReactionType)
+                return new LikeResponse(false, "Invalid operation");
+            var blogService = new BlogServices(_context,_userManager,_httpContextAccessor);
+            var existingLike = await GetUsersLike(like.Blog, like.User);
+            var blog = await blogService.GetBlogById(like.Blog);
+            if (existingLike != null)
+            {
+                if (!existingLike.ReactionType)
+                {
+                    _context.Likes.Remove(existingLike);
+                    blog.DislikeCount--;
+                    blog.Popularity = (2 * blog.LikeCount) + (-1 * blog.DislikeCount) + (1 * blog.CommentCount);
+                    _context.Blogs.Update(blog);
+                    await _context.SaveChangesAsync();
+                    return new LikeResponse(true, "Downvote removed", like);
+                }
+                else
+                {
+                    return new LikeResponse(false, "Cannot downvote");
+                }
+            }
+            else
+            {
+                _context.Likes.Add(like);
+                blog.DislikeCount++;
+                blog.Popularity = (2 * blog.LikeCount) + (-1 * blog.DislikeCount) + (1 * blog.CommentCount);
+                _context.Blogs.Update(blog);
+                await _context.SaveChangesAsync();
+                return new LikeResponse(true, "Downvote added successfully", like);
+            }
+        }
+        
         public async Task DeleteVote(Guid id)
         {
             var like = await _context.Likes.FirstOrDefaultAsync(x => x.Id == id);

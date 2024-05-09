@@ -32,7 +32,7 @@ namespace Presentation.Controllers
             _signInManager = signInManager;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterModel1 model)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
             if (!ModelState.IsValid)
             {
